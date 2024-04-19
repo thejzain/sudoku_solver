@@ -1,44 +1,22 @@
-use crossterm::{
-    event::{self, KeyCode, KeyEventKind},
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-    ExecutableCommand,
-};
+use std::io;
 
+use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::{
-    prelude::{CrosstermBackend, Stylize, Terminal},
-    widgets::Paragraph,
+    prelude::*,
+    symbols::border,
+    widgets::{block::*, *},
 };
 
-use std::io::{stdout, Result};
+mod tui;
 
-fn main() -> Result<()> {
-    stdout().execute(EnterAlternateScreen)?;
-    enable_raw_mode()?;
+pub struct App {
+    table: u8,
+    exit: bool,
+}
 
-    let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
-    terminal.clear()?;
-    loop {
-        let mut board = [[0; 9]; 9];
-
-        terminal.draw(|frame| {
-            let area = frame.size();
-            frame.render_widget(
-                Paragraph::new("Hi!\nThis is a sudoku solver for 9x9 sudoku\npress 'q' to quit")
-                    .white(),
-                area,
-            );
-        });
-
-        if event::poll(std::time::Duration::from_millis(16))? {
-            if let event::Event::Key(key) = event::read()? {
-                if key.kind == KeyEventKind::Press && key.code == KeyCode::Char('q') {
-                    break;
-                }
-            }
-        }
-    }
-
-    stdout().execute(LeaveAlternateScreen)?;
-    disable_raw_mode()?;
-    Ok(())
+fn main() -> io::Result<()> {
+    let mut terminal = tui::init()?;
+    let app_result = App::defualt().run(&mut terminal);
+    tui::restore()?;
+    app_result
 }
