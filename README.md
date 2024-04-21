@@ -57,11 +57,3 @@ The program utilizes several functions:
 * `validity_check`: Ensures the initial Sudoku state is valid (no duplicates in rows, columns, or boxes).
 * `solve`: Solves the Sudoku puzzle using backtracking. It iteratively tries different values for empty cells and checks for validity after each placement.
 * `find_empty_cell`: Locates the first empty cell in the Sudoku.
-
-### Contributing
-
-Feel free to contribute by creating pull requests with improvements or additional features.
-
-### License
-
-This project is licensed under the MIT License: [https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT).
