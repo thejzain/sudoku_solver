@@ -1,22 +1,14 @@
-use std::io;
-
-use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind};
-use ratatui::{
-    prelude::*,
-    symbols::border,
-    widgets::{block::*, *},
-};
-
-mod tui;
-
-pub struct App {
-    table: u8,
-    exit: bool,
-}
-
-fn main() -> io::Result<()> {
-    let mut terminal = tui::init()?;
-    let app_result = App::defualt().run(&mut terminal);
-    tui::restore()?;
-    app_result
+fn main() {
+    let mut sudoku = [[0; 9]; 9];
+    sudoku = [
+        [0, 1, 0, 0, 7, 0, 0, 5, 0],
+        [8, 0, 0, 1, 0, 0, 7, 4, 3],
+        [4, 0, 0, 0, 3, 0, 2, 0, 0],
+        [7, 0, 0, 0, 1, 3, 0, 0, 6],
+        [0, 0, 1, 6, 0, 0, 0, 0, 0],
+        [3, 6, 8, 0, 0, 4, 0, 7, 9],
+        [0, 8, 7, 3, 0, 5, 9, 6, 0],
+        [9, 3, 0, 0, 2, 0, 8, 0, 0],
+        [0, 0, 5, 8, 9, 0, 4, 0, 7],
+    ];
 }
