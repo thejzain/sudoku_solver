@@ -13,6 +13,8 @@ fn main() {
         [0, 0, 5, 8, 9, 0, 4, 0, 7],
     ];
     println!("{:?}", validity_check(&sudoku));
+    println!("{:?}", solve(&mut sudoku));
+    println!("{:?}", sudoku);
 }
 
 fn validity_check(sudoku: &[[i8; 9]; 9]) -> Result<(), String> {
@@ -38,4 +40,31 @@ fn validity_check(sudoku: &[[i8; 9]; 9]) -> Result<(), String> {
         }
     }
     Ok(())
+}
+
+fn solve(sudoku: &mut [[i8; 9]; 9]) -> Result<(), ()> {
+    if let Some(empty_cell) = find_empty_cell(&sudoku) {
+        let pos = empty_cell;
+        for i in 1..=9 {
+            sudoku[pos.0][pos.1] = i;
+
+            if validity_check(sudoku).is_ok() && solve(sudoku).is_ok() {
+                return Ok(());
+            }
+
+            sudoku[pos.0][pos.1] = 0;
+        }
+        return Err(());
+    }
+    Ok(())
+}
+fn find_empty_cell(sudoku: &[[i8; 9]; 9]) -> Option<(usize, usize)> {
+    for i in 0..9 {
+        for j in 0..9 {
+            if sudoku[i][j] == 0 {
+                return Some((i, j)); // Return the position of the first empty cell found
+            }
+        }
+    }
+    None // Return None if no empty cell is found
 }
